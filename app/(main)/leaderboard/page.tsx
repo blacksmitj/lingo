@@ -1,5 +1,9 @@
 import { FeedWrapper } from "@/components/feed-wrapper";
+import { Promo } from "@/components/promo";
+import { Quests } from "@/components/quests";
 import { StickyWrapper } from "@/components/sticky-wrapper";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
 import { UserProgress } from "@/components/user-progress";
 import {
   getTopTenUsers,
@@ -35,6 +39,8 @@ const LeaderboardPage = async () => {
           points={userProgress.points}
           hasActiveSubscription={isPro}
         />
+        {!isPro && <Promo />}
+        <Quests points={userProgress.points} />
       </StickyWrapper>
 
       <FeedWrapper>
@@ -51,8 +57,24 @@ const LeaderboardPage = async () => {
           <p className="text-muted-foreground text-center text-lg mb-6">
             See where you stand among other learners in the community.
           </p>
+          <Separator className="mb-4 h-0.5 rounded-full" />
           {leaderBoard.map((userProgress, index) => (
-            <div key={userProgress.userId}>{userProgress.userName}</div>
+            <div
+              key={userProgress.userId}
+              className="flex items-center w-full p-2 px-4 rounded-xl hover:bg-gray-200/50"
+            >
+              <p className="font-bold text-lime-700 mr-4">{index + 1}</p>
+              <Avatar className="border bg-green-500 h-12 w-12 ml-3 mr-6">
+                <AvatarImage
+                  src={userProgress.userImageSrc}
+                  className="object-cover"
+                />
+              </Avatar>
+              <p className="font-bold text-neutral-800 flex-1">
+                {userProgress.userName}
+              </p>
+              <p className="text-muted-foreground">{userProgress.points} XP</p>
+            </div>
           ))}
         </div>
       </FeedWrapper>
